@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "crypto-js": "^4.0.0",
+    "gulp": "^4.0.2",
+    "gulp-util": "^3.0.8",
+    "helpers": "^0.0.6",
+    "helpers.js": "^1.0.0",
+    "loader": "^2.1.1",
+    "loader.js": "^4.7.0",
+    "marked": "^1.2.6",
+    "run": "^1.4.0"
+  }
+}
