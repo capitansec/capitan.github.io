@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>başlık</title>
+</head>
+<body bgcolor=#212121>
+
+
+
+<div class="bg">
+	<center>
+
+
+	<div class=title>
+		<div class="baslik">CloudFlare Bypass Methods</div>
+	</div>
+
+
+
+	<div class="tarihbox">
+		<div class="tarih">12:36 - 28/01/2021</div></div>
+
+	</center>
+
+</div>
+
+
+
+	<div class="content"> 
+
+		<div class="image">
+			
+
+		</div>>
+
+		<div class="betik">
+>&nbsp;&nbsp;CloudFlare is kind of WAF.Systems use cloudflare applications in order to hide ip address of name server. Integrates into systems easily. 
+It works like proxy but there are some differences. Let's see some schemas. In this way we can imagine about how it works.
+<br><br><center><img src="img/1.png" height="250"><br></center><br><br>>&nbsp;&nbsp;As we said, It's like proxy. It is between client and server (out target). Cloudflare prevents the user from communicating 
+directly with the system. For us, Cloudflare can not show by fireWALL. It is more like a translucent curtain.
+If system uses CF It must be there 2 ip. One of them belong to CF other one is belong to server. We need to server ip.
+<br><br>
+   <br>client       =================> Cloudflare  ===============> Server
+(127.0.0.1)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;     (10.10.10.201) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;        (10.10.10.200)
+	<br><br><br>
+	>&nbsp;&nbsp;Most CloudFlare users switch to the CloudFlare system when their business and personal website come into service in a while. But even after they tally on to the CloudFlare system, they keep their site on the same server. Some domain and whois tools record the past actions, which lead to vulnerability. It's possible to access the real IP address of the target site by using the tools -such as DNSTrails and ViewDNS- that show DNS, IP, and HOST information used by the site in the past.<br><br>
+>&nbsp;&nbsp;Some of the webmasters can have websites more than one. While some of the websites are protected with DDos protection technology like CloudFlare, other sites aren't. In the meantime, an owner of the company can keep their website on the same server too.  The attackers reach the IP address of the target site is hosted on the same server by searching the server that they know belongs to the owner of the site.<br><br>
+<br><br><center><img src="img/cloud.png" width="550" height="400"><br></center><br><br>
+>&nbsp;&nbsp;Although the target site uses CloudFlare DNS for DDos protection, some DNS records (DNS Records) can give the real IP address of the site to the attacker. The most common of these records is the MX, that is, the Mail Server records. Nslookup, DIG etc. about the target site's DNS records. DNS dump can be obtained with whois tools as well as information can be obtained with DNS Information Gathering tools such as DNS Information Gathering. Thus, even if the NS records are directed to the CloudFlare server, the IP address of the real server hosting the site will be revealed in the MX records.
+There are some stolen infos from CF. You can use these sites in order to reach ip.<br><br><br>
+
+		<li><a>https://iphostinfo.com/cloudflare/</a></li>
+		<li><a>https://cloudresolve.net/</a></li>
+		<li><a>http://dnstree.com</a></li>
+		<li><a>http://skypegrab.net/cf.php</a></li>
+		<br><br><br>
+		
+			>&nbsp;&nbsp;Since Cloudflare software only covers the main domain in some cases, the ip 
+			addresses of the subdomains may be the result we are looking for. We can send requests 
+			and we can see ip adresses of sub-domains.<br><br>
+			<pre data-codetype="Ping Comands(for Linux)">
+ping ftp.site.com
+ping webmail.site.com
+ping blog.site.com
+ping forum.site.com
+ping driect-connect.site.com
+ping vb.site.com
+ping cpanel.site.com
+ping forums.site.com
+ping home.site.com
+ping shop.site.com
+ping blogs.site.com
+ping direct-connect.site.com
+ping direct.site.com
+ping ftp.site.com
+ping cpanel.site.com
+ping mail.site.com
+</pre><br><br><br>
+		>&nbsp;&nbsp;If that's doesn't work you can use some scripts.
+		First I want to talk about how to these programs works. 
+		Let's write a python script.<br><br>
+		<pre data-codetype="Python Script for Requests">
+#-*- coding: utf-8
+import requests
+url="https://capitansec.github.io"
+r = requests.get(url)
+print(r.history) 
+>> [Response 302, Response [302], Response [302], Response [302]]
+</pre><br>
+>&nbsp;&nbsp;As you can see we got 302 requests statu code four times. It's possible to there is  CF. 
+The requests we sent may have gone between cloudflare and the server.That is main algorithm. Let's see other programs.
+<br><br><hr width="100%" color="#AB0014" size="2">
+		<h2>Nmap</h2>
+		>&nbsp;&nbsp;Nmap is an information gathering tool with multi functions. We generally use nmap for port scanning.
+		Let's see how to use for dns enumarete.<br><br>
+		<pre data-codetype="Nmap Code">nmap --script dns-brute -sn xxxx.com</pre><br>
+		<center><img src="img/subdomain3.PNG" width="450" height="250"></center>
+		<br><br><hr width="100%" color="#AB0014" size="2"><br><br>
+		<h2>Wafw00f</h2>
+		>&nbsp;&nbsp;Wafw00f is a popular Python program that takes the guesswork of fingerprinting a website's firewall off your hands. Based on the responses
+		to a series of carefully crafted web requests, Wafw00f can determine the underlying firewall used by a service that it probes.This program already setup in kali linux. open a terminal and run "wafw00f".
+		<br><br><center><img src="img/wafw00f3.png" width="450" height="250"><br></center><hr width="100%" color="#AB0014" size="2"><br><br>
+		
+			<h2>Dnsenum</h2>
+			>&nbsp;&nbsp;DNSEnum is a command-line tool that automatically identifies basic DNS records such as MX, mail exchange servers, NS, domain name servers, or A—the address record for a domain.
+			<br><br><pre data-codetype="Dnsenum ">dnsenum --enum xxx.com</pre><br>
+		<center><img src="img/dnsenum.png" width="550" height="350"></center><br><br><hr width="100%" color="#AB0014" size="2"><br><br>
+		<h2>Dnsmap</h2>
+			>&nbsp;&nbsp;DNSMAP, as the name suggests, is DNS Network Mapper, which is used for multiple purposes. Basically, DNSMAP is an passive Network Mapper, often called a sub domain brute force tool. This tool is mainly used by penetration testers and hackers for DNS and sub domain information gathering.
+			<br><br><pre data-codetype="Dnsenum ">dnsmap xx.com
+</pre><br>
+		<center><img src="img/dnsenum.png" width="550" height="350"></center><br><br><hr width="100%" color="#AB0014" size="2"><br><br>
+
+
+
+
+		<h2>Webspoloit</h2>
+			>&nbsp;&nbsp;Websploit is an open-source framework used for testing web apps and networks. It is written in Python and uses modules to perform various activities such as directory scanning, man-in-the-middles, and wireless attacks.
+			<br><br><pre data-codetype="Dnsenum ">websploit
+use web/cloudflare_resolver
+set target xxx.com
+run
+
+</pre><br>
+		<br><br><hr width="100%" color="#AB0014" size="2"><br><br>
+
+
+		
+		
+		
+		
+		<h2>CloudFlareBypass</h2>
+			>&nbsp;&nbsp;CloudFlareBypass is a python script. For more info, you can visit github repo.
+			<br><br><pre data-codetype="Dnsenum ">
+git clone https://github.com/cihanmehmet/cloudflarebypass.git
+cd cloudflarebypass
+python cloulflarebypass.py
+./cloulflarebypass.py
+bash dnsresolver.sh
+./dnsresolver.sh
+</pre><br>
+		<br><hr width="100%" color="#AB0014" size="2"><br><br>
+
+
+
+
+
+
+		<h2>Hatcloud</h2>
+			>&nbsp;&nbsp;Hatcloud is a ruby script. For more info, you can visit github repo.
+			<br><br><pre data-codetype="Dnsenum ">git clone https://github.com/HatBashBR/HatCloud.git
+cd HatCloud
+sudo chmod +x hatcloud.rb
+ruby hatcloud.rb -b xxx.com
+ruby hatcloud.rb --byp xxx.com
+
+</pre><br>
+		<center><img src="img/hot.png" width="550" height="350"></center><br><br><hr width="100%" color="#AB0014" size="2"><br><br>
+
+
+
+
+
+
+
+
+
+
+
+		<h2>CloudFail</h2>
+			>&nbsp;&nbsp;CloudFail is a tactical reconnaissance tool which aims to gather enough information about a target protected by Cloudflare in the hopes of discovering the location of the server. Using Tor to mask all requests, the tool as of right now has 3 different attack phases.
+
+
+			<br><br><pre data-codetype="Dnsenum ">git clone https://github.com/m0rtem/CloudFail.git
+python cloudfail.py --target xxx.com
+service tor start
+python cloudfail.py --target xxx.com --tor
+
+
+</pre><br>
+		<center><img src="img/cs.png" width="550" height="350"></center><br><br><hr width="100%" color="#AB0014" size="2"><br><br>
+		
+		
+		<h2>References</h2><br>
+		<li>https://github.com</li>
+		<li>https://www.hackingloops.com</li>
+		<li>https://tools.kali.org</li>
+		<li>https://null-byte.wonderhowto.com</li>
+		<br><br>I would like to thank my friend Işıl for her contribution in the translation of the article.
+
+		</div>
+		</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+<style>
+
+
+
+
+
+	.bg {
+		height: 100%;
+		width: 100%;
+		background-color: #21121;
+
+	}
+	
+
+	.title {
+      width: 60%;
+      height: 50px;
+      padding:10px;
+      border:5px;
+      background-color: #111111;
+      margin-top: 50px;
+      border-radius: 15px;
+      padding-top: 30px;
+
+   }
+	
+	
+   .title .baslik {
+   	font-size: 30px;
+   	color: rgb(214, 24, 20);
+   	font-family: monospace;
+
+   }
+	
+	pre[data-codetype="JavaScript"] {border-color:#545448;color:#1F2E24;}
+	pre { background-color:black; background-image:-webkit-linear-gradient(top, #f5f5f5 50%, white 50%); background-image:-moz-linear-gradient(top, #f5f5f5 50%, white 50%); background-image:-ms-linear-gradient(top, #f5f5f5 50%, white 50%); background-image:-o-linear-gradient(top, #f5f5f5 50%, white 50%); background-image:linear-gradient(top, #f5f5f5 50%, white 50%); -webkit-background-size:30px 30px; -moz-background-size:30px 30px; -ms-background-size:30px 30px; -o-background-size:30px 30px; background-size:30px 30px; background-repeat:repeat; font:bold 12px/15px "Inconsolata","Monaco","Consolas","Andale Mono","Bitstream Vera Sans Mono","Courier New",Courier,monospace; color:#333; border:2px solid #666;-moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; border-radius: 5px; position:relative; padding:0 7px; margin:10px 5px; overflow:auto; word-wrap:normal; white-space:pre; -webkit-box-shadow:0 1px 2px rgba(0,0,0,0.2); -moz-box-shadow:0 1px 2px rgba(0,0,0,0.2); box-shadow:0 1px 2px rgba(0,0,0,0.2); position:relative; } pre[data-codetype] { padding:29px 1em 7px 1em; } pre[data-codetype]:before { content:attr(data-codetype); display:block; position:absolute; top:0; right:0; left:0; background-color:#666; padding:0 7px; font:bold 11px/20px Arial,Sans-Serif; color:white; }
+
+
+	
+   .tarihbox {
+   	width: 20%;
+   	height: 25px;
+   	background-color: #111111;
+   	float: right;
+   	margin-right: 19%;
+   	margin-top: 10px;
+   	margin-bottom: 13px;
+   	border-radius: 5px;
+   }
+
+   .tarihbox .tarih {
+   	color: rgb(154, 204, 50);
+   	font-family: monospace;
+   	padding-top: 5px;
+   }
+
+	.content {
+      width: 60%;
+      height: 7800px;
+      padding:10px;
+      border:5px;
+      margin:10px;
+      background-color: #111111;
+      margin-top: 45px;
+      border-radius: 25px;
+      margin-bottom: 13px;
+      margin-left:auto; 
+      margin-right:auto;
+
+
+   }
+
+   	.content .betik {
+	  color: gray;
+	  font-family: monospace;
+	  font-size: 16px;
+	  margin-top: 20px;
+	  padding-left: 9px;
+	  padding-right: 4px;
+	}
+	
+	.content .betik .h2{
+	  color: red;
+	
+	}
+
+	.content .image {
+		margin-top: 20px;
+	}
+
+
+</style>
+
+
+
+<script type="text/javascript">
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+const getRandomInRange = (min, max) => {
+  return Math.random() * (max - min) + min;
+};
+
+const TOTAL_POINTS = 20;
+const CONNECT_DISTANCE = 50;
+
+let points = [];
+
+const drawPoint = point => {
+  ctx.beginPath();
+  ctx.arc(point.x, point.y, 1, 0, 2 * Math.PI);
+  ctx.fill();
+};
+
+const movePoint = point => {
+  point.x += point.s * Math.cos(point.a);
+  point.y += point.s * Math.sin(point.a);
+};
+
+const distance = (point, other) => {
+  return Math.sqrt((other.x - point.x) ** 2 + (other.y - point.y) ** 2);
+};
+
+const drawLine = (point, other, d) => {
+  ctx.beginPath();
+  ctx.moveTo(point.x, point.y);
+  ctx.lineTo(other.x, other.y);
+  ctx.strokeStyle = `rgba(0, 0, 0, ${Math.abs(d / CONNECT_DISTANCE - 1)})`;
+  ctx.stroke();
+};
+
+const loop = () => {
+  window.requestAnimationFrame(loop);
+
+  for (let i = points.length; i < TOTAL_POINTS; i++) {
+    points.push({
+      x: getRandomInRange(0, canvas.width),
+      y: getRandomInRange(0, canvas.height),
+      a: getRandomInRange(0, 360),
+      s: 1
+    });
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  points.forEach(point => {
+    movePoint(point);
+  });
+
+  points = points.filter(point => {
+    return (
+      point.x >= 0 &&
+      point.x < canvas.width &&
+      point.y >= 0 &&
+      point.y < canvas.height
+    );
+  });
+
+  points.forEach(point => {
+    drawPoint(point);
+  });
+
+  points.forEach(point => {
+    points.forEach(other => {
+      if (point === other) {
+        return;
+      }
+
+      const d = distance(point, other);
+      if (d < CONNECT_DISTANCE) {
+        drawLine(point, other, d);
+      }
+    });
+  });
+};
+
+
+loop();
+
+</script>
+
+
+
+
+</html>
